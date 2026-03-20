@@ -444,6 +444,8 @@ function updateFragmentTransform(fragment, parallaxX, parallaxY) {
 
   const floatX = Math.sin(time + z) * 12 * drift;
   const floatY = Math.cos(time * 1.2 + z) * 10 * drift;
+  const skewX = Math.sin(time + z) * 2.5 * drift;
+  const skewY = Math.cos(time + z) * 2.0 * drift;
 
   fragment.style.transform = `
     translate3d(
@@ -452,6 +454,7 @@ function updateFragmentTransform(fragment, parallaxX, parallaxY) {
       ${z}px
     )
     scale(${scale})
+    skew(${skewX}deg, ${skewY}deg)
   `;
 }
 
@@ -541,12 +544,9 @@ function animate() {
   const now = performance.now();
   const idleDuration = now - lastMouseMoveTime;
 
-  if (idleDuration > 1800 && currentState.state === "scanning") {
-    if (Math.random() > 0.985) {
-      createBloom(
-        viewport.width * (0.35 + Math.random() * 0.3),
-        viewport.height * (0.3 + Math.random() * 0.3)
-      );
+  if (idleDuration > 1200 && currentState.state === "scanning") {
+    if (Math.random() > 0.97) {
+      createBloom(mouse.x, mouse.y);
     }
   }
 
@@ -556,10 +556,25 @@ function animate() {
     rotateY(${tiltY * 0.08}deg)
   `;
 
+  const t = performance.now() * 0.001;
+  if (currentState.state === "latent") {
+    halosRoot.style.opacity = String(0.8 + Math.sin(t * 0.5) * 0.1);
+    ribbonsRoot.style.opacity = "0.55";
+    contourLayer.style.opacity = String(0.05 + Math.sin(t * 0.4) * 0.02);
+  }
+
   if (currentState.state === "scanning") {
+    halosRoot.style.opacity = "1";
     halosRoot.style.transform = `translate(${normalizedX * 10}px, ${normalizedY * 8}px)`;
+    ribbonsRoot.style.opacity = String(0.9 + Math.sin(t * 1.5) * 0.15);
   } else {
     halosRoot.style.transform = "translate(0px, 0px)";
+  }
+
+  if (currentState.state === "ordered") {
+    halosRoot.style.opacity = "0.65";
+    ribbonsRoot.style.opacity = "1";
+    contourLayer.style.opacity = String(0.5 + Math.sin(t * 0.8) * 0.08);
   }
 
   [...document.querySelectorAll(".text-fragment")].forEach((el) => {
@@ -618,6 +633,13 @@ function animate() {
         parallaxX -= Math.cos(angle) * resistance;
         parallaxY -= Math.sin(angle) * resistance;
       }
+
+      const alignX = Math.round(baseX / 120) * 120;
+      const alignY = Math.round(baseY / 80) * 80;
+      const convergeStrength = 0.06;
+
+      parallaxX += (alignX - baseX) * convergeStrength;
+      parallaxY += (alignY - baseY) * convergeStrength;
 
       const returnStrength = 0.12;
       parallaxX *= (1 - returnStrength);

@@ -67,6 +67,7 @@ body {
   position: absolute;
 }
 
+/* Background halos */
 .halos {
   z-index: 1;
   pointer-events: none;
@@ -89,6 +90,7 @@ body {
     );
 }
 
+/* Background ribbons */
 .ribbons {
   z-index: 2;
   pointer-events: none;
@@ -114,6 +116,7 @@ body {
     );
 }
 
+/* Contours */
 .contours {
   z-index: 3;
   pointer-events: none;
@@ -127,6 +130,7 @@ body {
   will-change: transform, opacity;
 }
 
+/* Text fragments */
 .text-fragments {
   z-index: 8;
   pointer-events: none;
@@ -153,6 +157,7 @@ body {
   transform: translateY(0);
 }
 
+/* Echoes */
 .echo-layer {
   pointer-events: none;
   z-index: 9;
@@ -178,6 +183,7 @@ body {
   }
 }
 
+/* Foreground fragments */
 .fragments-layer {
   z-index: 10;
 }
@@ -186,7 +192,7 @@ body {
   position: absolute;
   width: 290px;
   height: 178px;
-  border-radius: 28px;
+  border-radius: 18px;
   border: 1px solid var(--line);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)),
@@ -197,6 +203,7 @@ body {
     0 0 18px var(--glow-soft);
   overflow: hidden;
   will-change: transform, opacity, filter;
+  mix-blend-mode: lighten;
   transition:
     width 820ms cubic-bezier(.22,1,.36,1),
     height 820ms cubic-bezier(.22,1,.36,1),
@@ -242,19 +249,20 @@ body {
 }
 
 .fragment-a {
-  border-top-left-radius: 36px;
-  border-bottom-right-radius: 18px;
+  border-top-left-radius: 28px;
+  border-bottom-right-radius: 12px;
 }
 
 .fragment-b {
-  border-radius: 34px;
+  border-radius: 20px;
 }
 
 .fragment-c {
-  border-bottom-left-radius: 36px;
-  border-top-right-radius: 20px;
+  border-bottom-left-radius: 28px;
+  border-top-right-radius: 12px;
 }
 
+/* UI */
 .state-label {
   top: 18px;
   left: 18px;
@@ -348,7 +356,8 @@ body {
   }
 
   .caption {
-    display: none;
+    max-width: 280px;
+    bottom: 56px;
   }
 
   .fragment {
