@@ -8,10 +8,8 @@ Files
 How to use
 1. Open index.html in a browser.
 2. Click "Shift State" to cycle through structured states.
-3. Replace one or more sample states in main.js with Gemini JSON output.
+3. Replaced sample states in main.js with Gemini JSON output.
 
-Suggested next polish steps
-- Add a subtle state transition sound if you want a more installation-like feel.
-- Introduce one custom shape mask or SVG edge treatment.
-- Add a faint moving gradient layer behind the panels for more depth.
-- Create a dedicated page on your site and link to this piece as a standalone artifact.
+https://alybarr.github.io/shifting_interface/
+
+I built this as an interactive system where AI influences behavior rather than simply generating output. I translated structured state data into atmosphere, motion, composition, and interaction so each mode feels distinct and responsive. My goal was to create something that feels less like a static interface and more like a living visual system. It reflects how I approach creative technology through experimentation, systems thinking, and building experiences where code and interaction shape the final result.
