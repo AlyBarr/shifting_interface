@@ -8,24 +8,26 @@
 </head>
 <body>
   <main class="scene" id="scene">
-    <div class="hud">
-      <p class="label" id="stateLabel">state: curious</p>
-      <button class="shift-btn" id="shiftBtn" type="button">Shift State</button>
-    </div>
+    <div class="echo-layer" id="echoLayer"></div>
+    <div class="halos" id="halos"></div>
+    <div class="ribbons" id="ribbons"></div>
+    <div class="contours" id="contours"></div>
+    <div class="text-fragments" id="textFragments"></div>
 
     <section class="fragments-layer" aria-label="Interactive interface study">
-      <div class="fragment fragment-a" data-depth="0.28"></div>
-      <div class="fragment fragment-b" data-depth="0.44"></div>
-      <div class="fragment fragment-c" data-depth="0.62"></div>
-      <div class="fragment fragment-d" data-depth="0.82"></div>
-      <div class="fragment fragment-e" data-depth="0.38"></div>
+      <div class="fragment fragment-a" data-depth="0.30"></div>
+      <div class="fragment fragment-b" data-depth="0.55"></div>
+      <div class="fragment fragment-c" data-depth="0.82"></div>
     </section>
+
+    <p class="state-label" id="stateLabel">state: latent</p>
+    <button class="shift-btn" id="shiftBtn" type="button">Shift State</button>
 
     <section class="caption">
       <h1>Shifting Interface</h1>
       <p>
-        A controlled interactive environment where AI-generated states influence
-        composition, motion, and response rather than obvious content.
+        AI-generated states alter atmosphere, composition, and interaction response
+        in real time.
       </p>
     </section>
 

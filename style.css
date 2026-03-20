@@ -1,16 +1,20 @@
 :root {
   --bg-1: #050814;
-  --bg-2: #0a1230;
-  --bg-3: #101a3f;
-  --line: rgba(197, 223, 255, 0.16);
-  --line-strong: rgba(197, 223, 255, 0.28);
-  --panel-top: rgba(255, 255, 255, 0.07);
-  --panel-bottom: rgba(255, 255, 255, 0.025);
-  --text: rgba(240, 246, 255, 0.92);
-  --muted: rgba(221, 233, 255, 0.58);
-  --glow-soft: rgba(118, 175, 255, 0.11);
-  --glow-strong: rgba(160, 212, 255, 0.2);
-  --shadow: rgba(0, 0, 0, 0.28);
+  --bg-2: #0b1634;
+  --bg-3: #101d45;
+
+  --ai-color-a: #1a1a1a;
+  --ai-color-b: #2c3e50;
+
+  --text: rgba(241, 246, 255, 0.92);
+  --muted: rgba(221, 233, 255, 0.56);
+
+  --line: rgba(205, 222, 255, 0.08);
+  --line-strong: rgba(205, 222, 255, 0.18);
+
+  --shadow: rgba(0, 0, 0, 0.22);
+  --glow-soft: rgba(130, 180, 255, 0.08);
+  --glow-strong: rgba(170, 214, 255, 0.18);
 }
 
 * {
@@ -29,10 +33,10 @@ body {
   color: var(--text);
   font-family: Inter, Arial, Helvetica, sans-serif;
   background:
-    radial-gradient(circle at 14% 16%, rgba(74, 110, 255, 0.08), transparent 28%),
-    radial-gradient(circle at 82% 28%, rgba(113, 192, 255, 0.07), transparent 24%),
-    radial-gradient(circle at 52% 78%, rgba(105, 125, 255, 0.05), transparent 30%),
-    linear-gradient(155deg, var(--bg-1), var(--bg-2) 48%, var(--bg-3));
+    radial-gradient(circle at 15% 18%, rgba(74, 110, 255, 0.09), transparent 26%),
+    radial-gradient(circle at 82% 28%, rgba(113, 192, 255, 0.06), transparent 24%),
+    radial-gradient(circle at 58% 80%, rgba(105, 125, 255, 0.05), transparent 32%),
+    linear-gradient(160deg, var(--bg-1), var(--bg-2) 50%, var(--bg-3));
 }
 
 .scene {
@@ -41,77 +45,166 @@ body {
   height: 100%;
   overflow: hidden;
   perspective: 1400px;
+  transform-style: preserve-3d;
   isolation: isolate;
 }
 
-.hud {
+.halos,
+.ribbons,
+.contours,
+.text-fragments,
+.echo-layer,
+.fragments-layer,
+.grain,
+.vignette {
   position: absolute;
-  inset: 22px 24px auto 24px;
-  z-index: 20;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
+  inset: 0;
 }
 
-.label {
-  margin: 0;
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--muted);
+.state-label,
+.shift-btn,
+.caption {
+  position: absolute;
 }
 
-.shift-btn {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.055);
-  color: var(--text);
+.halos {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.halo {
+  position: absolute;
+  width: min(60vw, 820px);
+  height: min(60vw, 820px);
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--ai-color-b) 70%, white 5%) 0%,
+      transparent 62%
+    );
+}
+
+.ribbons {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.ribbon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(82vw, 980px);
+  height: min(16vw, 190px);
   border-radius: 999px;
-  padding: 10px 15px;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  backdrop-filter: blur(12px);
-  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+  filter: blur(34px);
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--ai-color-b) 74%, white 8%) 50%,
+      transparent 100%
+    );
 }
 
-.shift-btn:hover {
-  transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.095);
-  border-color: rgba(255, 255, 255, 0.18);
+.contours {
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.10;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 39%, rgba(255,255,255,0.05) 39.5%, transparent 40%),
+    radial-gradient(circle at 50% 50%, transparent 0 51%, rgba(255,255,255,0.04) 51.5%, transparent 52%),
+    radial-gradient(circle at 50% 50%, transparent 0 63%, rgba(255,255,255,0.03) 63.5%, transparent 64%);
+  transform: scale(1.08);
+  will-change: transform, opacity;
+}
+
+.text-fragments {
+  z-index: 8;
+  pointer-events: none;
+}
+
+.text-fragment {
+  position: absolute;
+  color: rgba(235, 242, 255, 0.16);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease,
+    letter-spacing 500ms ease;
+  text-shadow: 0 0 12px rgba(160, 212, 255, 0.08);
+}
+
+.text-fragment.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.echo-layer {
+  pointer-events: none;
+  z-index: 9;
+}
+
+.fragment-echo {
+  position: absolute;
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,0.08);
+  opacity: 0.25;
+  filter: blur(1px);
+  animation: echoFade 1.6s ease-out forwards;
+}
+
+@keyframes echoFade {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08) translateY(-20px);
+  }
 }
 
 .fragments-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
+  z-index: 10;
 }
 
 .fragment {
   position: absolute;
-  width: 240px;
-  height: 150px;
-  border-radius: 26px;
+  width: 290px;
+  height: 178px;
+  border-radius: 28px;
   border: 1px solid var(--line);
   background:
-    linear-gradient(180deg, var(--panel-top), var(--panel-bottom)),
-    radial-gradient(circle at 20% 22%, rgba(188, 225, 255, 0.08), transparent 34%),
-    radial-gradient(circle at 80% 72%, rgba(116, 181, 255, 0.08), transparent 30%);
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--ai-color-b) 35%, transparent), transparent 72%),
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,0.04), transparent 34%);
   box-shadow:
-    0 16px 40px var(--shadow),
-    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
-    0 0 26px var(--glow-soft);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  transition:
-    width 900ms cubic-bezier(.22,1,.36,1),
-    height 900ms cubic-bezier(.22,1,.36,1),
-    opacity 700ms ease,
-    border-color 300ms ease,
-    box-shadow 500ms ease;
-  will-change: transform, opacity;
+    0 14px 34px var(--shadow),
+    0 0 18px var(--glow-soft);
   overflow: hidden;
+  will-change: transform, opacity, filter;
+  transition:
+    width 820ms cubic-bezier(.22,1,.36,1),
+    height 820ms cubic-bezier(.22,1,.36,1),
+    opacity 650ms ease,
+    border-color 280ms ease,
+    box-shadow 420ms ease,
+    transform 620ms ease,
+    filter 500ms ease;
 }
 
 .fragment::before {
@@ -119,10 +212,17 @@ body {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 34%),
-    radial-gradient(circle at 50% 120%, rgba(138, 204, 255, 0.08), transparent 42%);
-  pointer-events: none;
+    linear-gradient(135deg, rgba(255,255,255,0.08), transparent 36%),
+    radial-gradient(circle at 70% 38%, rgba(170, 210, 255, 0.08), transparent 24%),
+    repeating-linear-gradient(
+      180deg,
+      rgba(255,255,255,0.02) 0px,
+      rgba(255,255,255,0.02) 1px,
+      transparent 1px,
+      transparent 11px
+    );
   opacity: 0.9;
+  pointer-events: none;
 }
 
 .fragment::after {
@@ -130,46 +230,75 @@ body {
   position: absolute;
   inset: 1px;
   border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255,255,255,0.03);
   pointer-events: none;
 }
 
 .fragment:hover {
   border-color: var(--line-strong);
   box-shadow:
-    0 24px 56px rgba(0, 0, 0, 0.34),
-    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
-    0 0 38px var(--glow-strong);
+    0 20px 48px rgba(0, 0, 0, 0.30),
+    0 0 32px var(--glow-strong);
 }
 
 .fragment-a {
-  border-top-left-radius: 34px;
+  border-top-left-radius: 36px;
   border-bottom-right-radius: 18px;
 }
 
 .fragment-b {
-  border-top-right-radius: 34px;
+  border-radius: 34px;
 }
 
 .fragment-c {
-  border-radius: 32px;
+  border-bottom-left-radius: 36px;
+  border-top-right-radius: 20px;
 }
 
-.fragment-d {
-  border-bottom-left-radius: 34px;
+.state-label {
+  top: 18px;
+  left: 18px;
+  z-index: 20;
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(221, 233, 255, 0.42);
 }
 
-.fragment-e {
-  border-top-left-radius: 18px;
-  border-bottom-right-radius: 34px;
+.shift-btn {
+  right: 18px;
+  bottom: 18px;
+  z-index: 20;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: rgba(241, 246, 255, 0.82);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.shift-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.09);
+  border-color: rgba(255,255,255,0.18);
+  box-shadow: 0 0 16px rgba(160, 212, 255, 0.10);
 }
 
 .caption {
-  position: absolute;
   left: 24px;
   bottom: 24px;
   z-index: 20;
   max-width: 360px;
+  opacity: 0.42;
 }
 
 .caption h1 {
@@ -188,8 +317,6 @@ body {
 
 .grain,
 .vignette {
-  position: absolute;
-  inset: 0;
   pointer-events: none;
 }
 
@@ -206,25 +333,26 @@ body {
 .vignette {
   z-index: 25;
   background:
-    radial-gradient(circle at center, transparent 52%, rgba(0, 0, 0, 0.22) 100%);
+    radial-gradient(circle at center, transparent 52%, rgba(0,0,0,0.22) 100%);
 }
 
 @media (max-width: 768px) {
-  .hud {
-    inset: 18px 18px auto 18px;
-    flex-direction: column;
-    align-items: flex-start;
+  .halo {
+    width: 84vw;
+    height: 84vw;
+  }
+
+  .ribbon {
+    width: 90vw;
+    height: 24vw;
   }
 
   .caption {
-    left: 18px;
-    right: 18px;
-    bottom: 18px;
-    max-width: 300px;
+    display: none;
   }
 
   .fragment {
-    width: 180px;
-    height: 120px;
+    width: 220px;
+    height: 140px;
   }
 }
