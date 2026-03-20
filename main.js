@@ -56,6 +56,50 @@ const states = [
     drift: 0.26,
     focus: 0.62,
     opacityMode: "layered"
+  },
+  {
+    state: "quiet",
+    tension: 0.15,
+    flow: "drifting",
+    density: "sparse",
+    bias: "bottom",
+    response: "delayed",
+    drift: 0.82,
+    focus: 0.25,
+    opacityMode: "fading"
+  },
+  {
+    state: "searching",
+    tension: 0.45,
+    flow: "smooth",
+    density: "balanced",
+    bias: "top",
+    response: "elastic",
+    drift: 0.35,
+    focus: 0.78,
+    opacityMode: "layered"
+  },
+  {
+    state: "tense",
+    tension: 0.85,
+    flow: "erratic",
+    density: "clustered",
+    bias: "right",
+    response: "sharp",
+    drift: 0.08,
+    focus: 0.92,
+    opacityMode: "even"
+  },
+  {
+    state: "settled",
+    tension: 0.05,
+    flow: "tight",
+    density: "balanced",
+    bias: "center",
+    response: "gentle",
+    drift: 0.02,
+    focus: 0.45,
+    opacityMode: "even"
   }
 ];
 
